@@ -8,9 +8,8 @@ function Array() {
     const[arrayToDo, setArrayToDo] = React.useState([]);
 
     React.useEffect(() => {
-    let apiBla = async() => {
+    let apiTakeData = async() => {
       let data = await FetchUserData();
-      /* console.log(data); */
       let arrayTemp = data.map((user) => {
         return {
           id: user.id,
@@ -21,13 +20,12 @@ function Array() {
       }})
       setArrayToDo(arrayTemp);
     } 
-    apiBla();
+    apiTakeData();
     }, []);
 
-
-    /*ASSIGN USERS - in the empty array */
-    const ReturnData = (params) => {
-      let returnItem = arrayToDo.map((item) => {
+    /*ASSIGN USERS OR TASKS DATA - in the empty array */
+    const ReturnData = (params, targetArray) => {
+      let returnItem = targetArray.map((item) => {
         return (
           <div className='tbl-item'>
             {item[params]}
@@ -38,14 +36,14 @@ function Array() {
     }
 
 
-    /*TO DO - take the API data */
+    /*TO DO ASSIGNMENTS - take the API data */
     const[arrayAssignments, setArrayAssignments] = React.useState([]);
+    /* Second array for the click event */
     const [arrayAssignmentsFiltered, setArrayAssignmentsFiltered] = React.useState([])
 
     React.useEffect(() => {
     let apiAssignments = async() => {
       let data = await FetchUserAssignments();
-      /* console.log(data); */
       let arrayTempToDo = data.map((user) => {
         return {
           id: user.userId,
@@ -58,37 +56,18 @@ function Array() {
     } 
     apiAssignments();
     }, []);
-
-
-    /*ASSIGN TASKS - in the empty array */
-    const ReturnDataAssign = (params) => {
-      let returnItemTask = arrayAssignmentsFiltered.map((item) => {
-        return (
-          <div className='tbl-item'>
-            {item[params]}
-          </div>
-        )
-      }) 
-      return returnItemTask;
-    }
-
-
-
-
-
-    /*ONCLICK - function onClick for button */
+    
+    /*ONCLICK - Function onClick for the buttons */
     const [showResults, setShowResults] = React.useState(false)
     const funcOnClick = (idUser) => {
-/*       idUser === idTask ? setShowResults(true) : setShowResults(false) */
-      console.log(idUser)
-      let newArray = arrayAssignments.filter((task)=>{
+      let newArray = arrayAssignments.filter((task) => {
         if(task.id === idUser){
           return task
         }
       })
-      console.log(newArray)
-      setShowResults(true) 
-      setArrayAssignmentsFiltered(newArray)
+
+      setShowResults(true); 
+      setArrayAssignmentsFiltered(newArray);
       
       return funcOnClick;
     }
@@ -98,49 +77,46 @@ function Array() {
       let returnButtonUrl = arrayToDo.map((buttonUrl) => {
         return (
           <div>
-          <button 
-          className='tbl-item' 
-          id={buttonUrl[paramsButton]}
-          onClick={()=>funcOnClick(buttonUrl[paramsButton])}
-          >
-            {/* {buttonUrl[paramsButton]} */} Look up
-          </button>
+            <button 
+            className='tbl-item' 
+            id={buttonUrl[paramsButton]}
+            onClick={()=>funcOnClick(buttonUrl[paramsButton])}
+            >
+              Look up
+            </button>
           </div>
         )
       }) 
       return returnButtonUrl;
     }
-
-
-
+    
     /* RETURN */
     return (
       <div>
-
           {/* ARRAY */}
           <div className="array">
             {/* Name */}
             <div className="tbl-name tbl-bl">
               <h2>Name</h2>
-              {ReturnData('name')}
+              {ReturnData('name', arrayToDo)}
             </div>
 
             {/* User Name */}
             <div className="tbl-usern tbl-bl">
               <h2>User Name</h2>
-              {ReturnData('username')}
+              {ReturnData('username', arrayToDo)}
             </div>
 
             {/* Email */}
             <div className="tbl-email tbl-bl">
               <h2>Email</h2>
-              {ReturnData('email')}
+              {ReturnData('email', arrayToDo)}
             </div>
 
             {/* City */}
             <div className="tbl-city tbl-bl">
               <h2>City</h2>
-              {ReturnData('city')}
+              {ReturnData('city', arrayToDo)}
             </div>
 
             {/* Button */}
@@ -151,22 +127,20 @@ function Array() {
 
           </div>
 
-
-
           {/* ON CLICK */}
           <div className="on-click">
             <div className="array-onClick">
-            <div>
+              <div>
                 <h3>ID</h3>
-                {showResults ? ReturnDataAssign('id') : null}
+                {showResults ? ReturnData('id', arrayAssignmentsFiltered) : null}
               </div>
               <div>
                 <h3>Title</h3>
-                {showResults ? ReturnDataAssign('title') : null}
+                {showResults ? ReturnData('title', arrayAssignmentsFiltered) : null}
               </div>
               <div>
                 <h3>Status</h3>
-                {showResults ? ReturnDataAssign('status') : null}
+                {showResults ? ReturnData('status', arrayAssignmentsFiltered) : null}
               </div>
             </div>
           </div>

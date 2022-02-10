@@ -1,3 +1,4 @@
+/* Get the users' data */
 function FetchUserData() {
     
     return fetch('https://jsonplaceholder.typicode.com/users/',
@@ -16,6 +17,5 @@ function FetchUserData() {
         ) 
         .catch(error => console.log(error))
 }
-
 
 export default FetchUserData;
