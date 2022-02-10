@@ -1,8 +1,8 @@
 import React from "react";
 import FetchUserData from './apiArray.js';
-import FetchUserAssignments from './apiToDo';
 
-function Array() {
+
+function ArrayUserData(props) {
 
     /*USERS - take the API data */
     const[arrayToDo, setArrayToDo] = React.useState([]);
@@ -37,9 +37,9 @@ function Array() {
 
 
     /*TO DO ASSIGNMENTS - take the API data */
-    const[arrayAssignments, setArrayAssignments] = React.useState([]);
+/*     const[arrayAssignments, setArrayAssignments] = React.useState([]); */
     /* Second array for the click event */
-    const [arrayAssignmentsFiltered, setArrayAssignmentsFiltered] = React.useState([])
+/*     const [arrayAssignmentsFiltered, setArrayAssignmentsFiltered] = React.useState([])
 
     React.useEffect(() => {
     let apiAssignments = async() => {
@@ -55,22 +55,26 @@ function Array() {
       setArrayAssignments(arrayTempToDo);
     } 
     apiAssignments();
-    }, []);
+    }, []); */
     
     /*ONCLICK - Function onClick for the buttons */
-    const [showResults, setShowResults] = React.useState(false)
+    const [showResults, setShowResults] = React.useState(false);
+    
     const funcOnClick = (idUser) => {
-      let newArray = arrayAssignments.filter((task) => {
+
+      let newArray = props.arrayAssignments.filter((task) => {
         if(task.id === idUser){
           return task
         }
       })
 
-      setShowResults(true); 
-      setArrayAssignmentsFiltered(newArray);
+/*       setShowResults(true); 
+      setArrayAssignmentsFiltered(newArray); */
+      props.setShowResults(true)
+      props.setArrayAssignmentsFiltered(newArray)
       
       return funcOnClick;
-    }
+    } 
 
     /*BUTTON put url in the button */
     const ReturnDataUrl = (paramsButton) => {
@@ -128,7 +132,7 @@ function Array() {
           </div>
 
           {/* ON CLICK */}
-          <div className="on-click">
+{/*           <div className="on-click">
             <div className="array-onClick">
               <div>
                 <h3>ID</h3>
@@ -143,9 +147,9 @@ function Array() {
                 {showResults ? ReturnData('status', arrayAssignmentsFiltered) : null}
               </div>
             </div>
-          </div>
+          </div> */}
       </div>
     );
 }
 
-export default Array;
+export default ArrayUserData;
