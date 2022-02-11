@@ -3,26 +3,6 @@ import FetchUserData from './apiArray.js';
 
 
 function ArrayUserData(props) {
-
-    /*USERS - take the API data */
-    const[arrayToDo, setArrayToDo] = React.useState([]);
-
-    React.useEffect(() => {
-    let apiTakeData = async() => {
-      let data = await FetchUserData();
-      let arrayTemp = data.map((user) => {
-        return {
-          id: user.id,
-          name: user.name,
-          username: user.username,
-          email: user.email,
-          city: user.address.city
-      }})
-      setArrayToDo(arrayTemp);
-    } 
-    apiTakeData();
-    }, []);
-
     /*ASSIGN USERS OR TASKS DATA - in the empty array */
     const ReturnData = (params, targetArray) => {
       let returnItem = targetArray.map((item) => {
@@ -34,51 +14,24 @@ function ArrayUserData(props) {
       }) 
       return returnItem;
     }
-
-
-    /*TO DO ASSIGNMENTS - take the API data */
-/*     const[arrayAssignments, setArrayAssignments] = React.useState([]); */
-    /* Second array for the click event */
-/*     const [arrayAssignmentsFiltered, setArrayAssignmentsFiltered] = React.useState([])
-
-    React.useEffect(() => {
-    let apiAssignments = async() => {
-      let data = await FetchUserAssignments();
-      let arrayTempToDo = data.map((user) => {
-        return {
-          id: user.userId,
-          taskid: user.id,
-          username: user.username,
-          title: user.title,
-          status: user.completed === true ? "completed" : "not completed"
-      }})
-      setArrayAssignments(arrayTempToDo);
-    } 
-    apiAssignments();
-    }, []); */
     
-    /*ONCLICK - Function onClick for the buttons */
-    const [showResults, setShowResults] = React.useState(false);
-    
+
+    /*ONCLICK - Function onClick for the buttons */    
     const funcOnClick = (idUser) => {
-
+      console.log(props.arrayAssignments)
       let newArray = props.arrayAssignments.filter((task) => {
-        if(task.id === idUser){
-          return task
+        if(task.userId === idUser){
+          return task;
         }
       })
-
-/*       setShowResults(true); 
-      setArrayAssignmentsFiltered(newArray); */
-      props.setShowResults(true)
-      props.setArrayAssignmentsFiltered(newArray)
-      
-      return funcOnClick;
+      props.setArrayAssignmentsFiltered(newArray);
+      props.setGoBack(!props.goBack);
     } 
+
 
     /*BUTTON put url in the button */
     const ReturnDataUrl = (paramsButton) => {
-      let returnButtonUrl = arrayToDo.map((buttonUrl) => {
+      let returnButtonUrl = props.arrayUsers.map((buttonUrl) => {
         return (
           <div>
             <button 
@@ -94,6 +47,7 @@ function ArrayUserData(props) {
       return returnButtonUrl;
     }
     
+
     /* RETURN */
     return (
       <div>
@@ -102,25 +56,25 @@ function ArrayUserData(props) {
             {/* Name */}
             <div className="tbl-name tbl-bl">
               <h2>Name</h2>
-              {ReturnData('name', arrayToDo)}
+              {ReturnData('name', props.arrayUsers)}
             </div>
 
             {/* User Name */}
             <div className="tbl-usern tbl-bl">
               <h2>User Name</h2>
-              {ReturnData('username', arrayToDo)}
+              {ReturnData('username', props.arrayUsers)}
             </div>
 
             {/* Email */}
             <div className="tbl-email tbl-bl">
               <h2>Email</h2>
-              {ReturnData('email', arrayToDo)}
+              {ReturnData('email', props.arrayUsers)}
             </div>
 
             {/* City */}
             <div className="tbl-city tbl-bl">
               <h2>City</h2>
-              {ReturnData('city', arrayToDo)}
+              {ReturnData('city', props.arrayUsers)}
             </div>
 
             {/* Button */}
@@ -130,24 +84,6 @@ function ArrayUserData(props) {
             </div>
 
           </div>
-
-          {/* ON CLICK */}
-{/*           <div className="on-click">
-            <div className="array-onClick">
-              <div>
-                <h3>ID</h3>
-                {showResults ? ReturnData('id', arrayAssignmentsFiltered) : null}
-              </div>
-              <div>
-                <h3>Title</h3>
-                {showResults ? ReturnData('title', arrayAssignmentsFiltered) : null}
-              </div>
-              <div>
-                <h3>Status</h3>
-                {showResults ? ReturnData('status', arrayAssignmentsFiltered) : null}
-              </div>
-            </div>
-          </div> */}
       </div>
     );
 }

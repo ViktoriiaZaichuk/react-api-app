@@ -2,31 +2,8 @@ import React from "react";
 import FetchUserAssignments from './apiToDo';
 
 function ArrayTaskData(props) {
-    
-    
-    /*TO DO ASSIGNMENTS - take the API data */
-    /* const[arrayAssignments, setArrayAssignments] = React.useState([]); */
-    /* Second array for the click event */
-    /* const [arrayAssignmentsFiltered, setArrayAssignmentsFiltered] = React.useState([])  */
-    
-    React.useEffect(() => {
-        let apiAssignments = async() => {
-            let data = await FetchUserAssignments();
-            let arrayTempToDo = data.map((user) => {
-                return {
-                    id: user.userId,
-                    taskid: user.id,
-                    username: user.username,
-                    title: user.title,
-                    status: user.completed === true ? "completed" : "not completed"
-                }})
-                props.setArrayAssignments(arrayTempToDo);
-            } 
-            apiAssignments();
-        }, []);
-        
         /*ASSIGN USERS OR TASKS DATA - in the empty array */
-        const ReturnData = (params, targetArray) => {
+        let ReturnData = (params, targetArray) => {
             let returnItem = targetArray.map((item) => {
               return (
                 <div className='tbl-item'>
@@ -37,24 +14,51 @@ function ArrayTaskData(props) {
             return returnItem;
         }    
     
+
+        /* GO BACK BUTTON Function*/
+        const funcGoBack = () => {
+          props.setGoBack(!props.goBack);
+        } 
+
+
+        /* GET the USER NAME DATA */
+        const getUserName = (tasksArray) => {
+          console.log(props.arrayAssignmentsFiltered)
+          let newArrayName = props.arrayUsers.filter((user) => {
+            if(user.id === tasksArray[0].userId){
+              return user; 
+            }
+          })
+          console.log(props.arrayAssignmentsFiltered)
+          if(newArrayName.length> 0){
+            return newArrayName[0].name
+          }
+        }
+        let actualNameUser = getUserName(props.arrayAssignmentsFiltered);
+
+    /* RETURN */
     return (
         <div className="on-click">
+            <div>
+              {/* BUTTON */}
+              <button onClick={funcGoBack}>Go Back</button>
+              {/* USER NAME */}
+              {actualNameUser}
+            </div>
+
+            {/* ARRAY */}
             <div className="array-onClick">
               <div>
                 <h3>ID</h3>
-                    {props.showResults ? ReturnData('id', props.arrayAssignmentsFiltered) : null}
-                {/* {ReturnData('id', arrayAssignments)} */}
+                  {ReturnData('id', props.arrayAssignmentsFiltered)}
               </div>
               <div>
                 <h3>Title</h3>
-              {/*   {showResults ? ReturnData('title', arrayAssignmentsFiltered) : null} */}
-              {props.showResults ? ReturnData('title', props.arrayAssignmentsFiltered) : null}
+                {ReturnData('title', props.arrayAssignmentsFiltered)}
               </div>
               <div>
                 <h3>Status</h3>
-
-               {/*  {showResults ? ReturnData('status', arrayAssignmentsFiltered) : null} */}
-               {props.showResults ? ReturnData('status', props.arrayAssignmentsFiltered) : null}
+                {ReturnData('status', props.arrayAssignmentsFiltered)}
               </div>
             </div>
         </div>

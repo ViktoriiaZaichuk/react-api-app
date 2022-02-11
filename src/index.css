@@ -62,8 +62,13 @@ button {
 
 .on-click {
   margin: 2rem;
+  padding: 2rem;
   border: solid black .1rem;
 
+}
+
+.on-click button {
+  margin: 2rem 0;
 }
 
 .array-onClick {

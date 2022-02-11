@@ -10,7 +10,7 @@ function FetchUserAssignments() {
 
         .then((response) => { return response.json()})
         .then(json => { 
-            console.log(json);
+            /* console.log(json); */
             return json;
         }
         
